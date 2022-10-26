@@ -1,0 +1,60 @@
+{%extends 'base.html'%}
+{%block body_block%}
+<div class="col-4">
+    {%if messages%}
+    {%for m in messages%}
+    {%if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{m}}</strong> You should check in on some of those fields below.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endif%}
+    {%if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>{{m}}</strong> You should check in on some of those fields below.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endif%}
+    {%endfor%}
+    {%endif%}
+</div>
+<div class="container">
+    <div class="row">
+
+        <!--        <div class="col-3">-->
+        <!--        </div>-->
+        <div class="col-6">
+            {%for cart in carts%}
+            <div class="card">
+
+                <!-- Product image-->
+                <img class="card-img-top" src="{{cart.product.img.url}}" alt="..." height="300"/>
+                <!-- Product details-->
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <!-- Product name-->
+                        <h5 class="fw-bolder">{{cart.product.product_name}}</h5>
+                        <!-- Product price-->
+                        ₹{{cart.product.price}}
+                    </div>
+                </div>
+                <!-- Product actions-->
+                <div class="col-2">
+                    qty:{{cart.qty}}
+                    status:{{cart.status}}
+                </div>
+                <div class="col-2">
+                    {%if cart.status != "cancelled"%}
+                    <a href="{%url 'cart-item-remove' cart.id %}" class="btn btn-outline-danger ">Remove</a>
+                    {%if cart.status != "order-placed"%}
+                    <a href="{%url 'place-order' cart.id cart.product.id %}"
+                       class="btn btn-outline-success">Checkout</a>
+                </div>
+                {%endif%}
+                {%endif%}
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{%endblock%}
